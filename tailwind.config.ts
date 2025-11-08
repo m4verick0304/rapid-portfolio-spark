@@ -46,6 +46,11 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          hover: "hsl(var(--card-hover))",
+        },
+        hero: {
+          from: "hsl(var(--hero-gradient-start))",
+          to: "hsl(var(--hero-gradient-end))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

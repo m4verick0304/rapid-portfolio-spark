@@ -106,6 +106,25 @@ All colors MUST be HSL.
   }
 }
 
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-hero-from to-hero-to bg-clip-text text-transparent;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

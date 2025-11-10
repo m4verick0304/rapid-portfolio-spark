@@ -5,6 +5,7 @@ import Contact from "@/components/Contact";
 import MatrixBackground from "@/components/MatrixBackground";
 import CyberGrid from "@/components/CyberGrid";
 import MouseTracker from "@/components/MouseTracker";
+import Navbar from "@/components/Navbar";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <MatrixBackground />
       <CyberGrid />
       <MouseTracker />
+      <Navbar />
       <Hero />
       <Projects />
       <About />

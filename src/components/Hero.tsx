@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowDown, Code2, Sparkles } from "lucide-react";
+import { ArrowDown, Code2, Sparkles, Shield, Lock, Terminal } from "lucide-react";
 import { useEffect, useState } from "react";
+import TypingEffect from "./TypingEffect";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,9 +24,9 @@ const Hero = () => {
       </div>
 
       <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6 animate-scale-in">
-          <Sparkles className="h-4 w-4" />
-          <span className="text-sm font-medium">Available for opportunities</span>
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6 animate-scale-in border border-primary/20 backdrop-blur-sm">
+          <Shield className="h-4 w-4 animate-pulse" />
+          <span className="text-sm font-medium">Ethical Hacker & Security Enthusiast</span>
         </div>
         
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 animate-fade-in-up">
@@ -33,9 +34,17 @@ const Hero = () => {
         </h1>
         
         <div className="flex items-center justify-center gap-3 mb-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <Code2 className="h-6 w-6 text-primary" />
-          <p className="text-xl md:text-2xl text-muted-foreground">
-            B.Tech CSE Student & Python Developer
+          <Terminal className="h-6 w-6 text-primary animate-pulse" />
+          <p className="text-xl md:text-2xl text-muted-foreground font-mono">
+            <TypingEffect 
+              texts={[
+                "B.Tech CSE Student",
+                "Python Developer",
+                "Cybersecurity Enthusiast",
+                "Penetration Tester",
+                "Security Researcher"
+              ]}
+            />
           </p>
         </div>
 
@@ -43,15 +52,16 @@ const Hero = () => {
           Building practical solutions with clean code. Passionate about cybersecurity and creating tools that make a difference.
         </p>
         
-        <div className="animate-fade-in" style={{ animationDelay: "0.6s" }}>
+        <div className="animate-fade-in flex gap-4 justify-center" style={{ animationDelay: "0.6s" }}>
           <Button
             onClick={scrollToProjects}
             size="lg"
-            className="group relative overflow-hidden px-8 py-6 text-lg"
+            className="group relative overflow-hidden px-8 py-6 text-lg border border-primary/20 shadow-lg hover:shadow-primary/50 transition-all duration-300"
           >
-            <span className="relative z-10 flex items-center">
+            <span className="relative z-10 flex items-center gap-2">
+              <Lock className="h-5 w-5 group-hover:rotate-12 transition-transform" />
               View My Projects
-              <ArrowDown className="ml-2 h-5 w-5 group-hover:translate-y-1 transition-transform" />
+              <ArrowDown className="h-5 w-5 group-hover:translate-y-1 transition-transform" />
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>

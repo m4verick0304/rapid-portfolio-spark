@@ -27,21 +27,22 @@ const MouseTracker = () => {
 
   return (
     <>
-      {/* Outer glow */}
+      {/* Subtle outer glow */}
       <div
-        className="fixed pointer-events-none z-50 rounded-full mix-blend-screen"
+        className="fixed pointer-events-none z-50 rounded-full"
         style={{
           left: position.x,
           top: position.y,
-          width: "400px",
-          height: "400px",
-          background: "radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 60%)",
+          width: "120px",
+          height: "120px",
+          background: "radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)",
           transform: "translate(-50%, -50%)",
-          transition: "left 0.15s ease-out, top 0.15s ease-out",
+          transition: "left 0.1s ease-out, top 0.1s ease-out",
+          filter: "blur(8px)",
         }}
       />
       
-      {/* Crosshair container */}
+      {/* Main cursor ring */}
       <div
         className="fixed pointer-events-none z-50"
         style={{
@@ -51,62 +52,39 @@ const MouseTracker = () => {
           transition: "left 0.05s ease-out, top 0.05s ease-out",
         }}
       >
-        {/* Center dot */}
+        {/* Center dot with glow */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           style={{
-            width: "6px",
-            height: "6px",
+            width: "4px",
+            height: "4px",
             background: "hsl(var(--primary))",
             borderRadius: "50%",
-            boxShadow: "0 0 10px hsl(var(--primary) / 0.8)",
+            boxShadow: "0 0 8px 2px hsl(var(--primary) / 0.8)",
           }}
         />
         
-        {/* Horizontal line */}
+        {/* Rotating ring */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           style={{
-            width: "40px",
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, hsl(var(--primary)), transparent)",
-          }}
-        />
-        
-        {/* Vertical line */}
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          style={{
-            width: "1px",
-            height: "40px",
-            background: "linear-gradient(180deg, transparent, hsl(var(--primary)), transparent)",
-          }}
-        />
-        
-        {/* Corner brackets */}
-        <div
-          className="absolute"
-          style={{
-            left: "-20px",
-            top: "-20px",
-            width: "40px",
-            height: "40px",
-            border: "2px solid hsl(var(--primary) / 0.6)",
-            borderRadius: "4px",
-            clipPath: "polygon(0 0, 12px 0, 12px 2px, 2px 2px, 2px 12px, 0 12px, 0 0, 0 100%, 12px 100%, 12px calc(100% - 2px), 2px calc(100% - 2px), 2px calc(100% - 12px), 0 calc(100% - 12px), 100% 0, 100% 12px, calc(100% - 2px) 12px, calc(100% - 2px) 2px, calc(100% - 12px) 2px, calc(100% - 12px) 0, 100% 100%, calc(100% - 12px) 100%, calc(100% - 12px) calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) calc(100% - 12px), 100% calc(100% - 12px))",
-            animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-          }}
-        />
-        
-        {/* Scanning line effect */}
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          style={{
-            width: "60px",
-            height: "60px",
-            border: "1px solid hsl(var(--primary) / 0.3)",
+            width: "24px",
+            height: "24px",
+            border: "1.5px solid hsl(var(--primary) / 0.6)",
             borderRadius: "50%",
-            animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
+            borderTopColor: "hsl(var(--primary))",
+            animation: "spin 3s linear infinite",
+          }}
+        />
+        
+        {/* Pulse ring */}
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-ping"
+          style={{
+            width: "20px",
+            height: "20px",
+            border: "1px solid hsl(var(--primary) / 0.4)",
+            borderRadius: "50%",
           }}
         />
       </div>

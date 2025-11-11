@@ -23,144 +23,265 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   }, [onLoadingComplete]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center">
-      {/* Animated background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+    <div className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center overflow-hidden">
+      {/* Animated circuit background */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(90deg, hsl(var(--primary) / 0.1) 1px, transparent 1px),
+            linear-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+          animation: 'grid-move 20s linear infinite'
+        }} />
       </div>
 
-      {/* Frying pan and egg animation */}
+      {/* Scanning lines */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="scan-line" />
+        <div className="scan-line" style={{ animationDelay: '2s' }} />
+      </div>
+
+      {/* Main loading animation */}
       <div className="relative mb-12">
-        <div className="frying-pan-container">
-          {/* Pan */}
-          <div className="frying-pan">
-            <div className="pan-handle"></div>
-            <div className="pan-body"></div>
+        <div className="cyber-loader">
+          {/* Central hexagon */}
+          <div className="hexagon">
+            <div className="hexagon-inner">
+              <div className="text-4xl font-bold text-primary animate-pulse">
+                {progress}%
+              </div>
+            </div>
           </div>
           
-          {/* Egg */}
-          <div className="egg">
-            <div className="egg-white"></div>
-            <div className="egg-yolk"></div>
+          {/* Orbiting circles */}
+          <div className="orbit orbit-1">
+            <div className="orbit-dot" />
+          </div>
+          <div className="orbit orbit-2">
+            <div className="orbit-dot" />
+          </div>
+          <div className="orbit orbit-3">
+            <div className="orbit-dot" />
           </div>
         </div>
       </div>
 
-      {/* Loading text */}
+      {/* Loading text with glitch effect */}
       <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gradient mb-2 font-mono">
-          Cooking Something Special...
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 font-mono relative">
+          <span className="text-gradient glitch-text" data-text="INITIALIZING SYSTEM">
+            INITIALIZING SYSTEM
+          </span>
         </h2>
-        <p className="text-muted-foreground font-mono text-sm">
-          {progress < 30 && "Heating up the pan..."}
-          {progress >= 30 && progress < 60 && "Adding ingredients..."}
-          {progress >= 60 && progress < 90 && "Almost ready..."}
-          {progress >= 90 && "Serving fresh!"}
+        <p className="text-primary/80 font-mono text-sm tracking-wider">
+          {progress < 25 && "[ LOADING MODULES... ]"}
+          {progress >= 25 && progress < 50 && "[ ESTABLISHING CONNECTION... ]"}
+          {progress >= 50 && progress < 75 && "[ COMPILING ASSETS... ]"}
+          {progress >= 75 && progress < 95 && "[ FINAL CHECKS... ]"}
+          {progress >= 95 && "[ SYSTEM READY ]"}
         </p>
       </div>
 
-      {/* Progress bar */}
-      <div className="w-64 h-2 bg-muted rounded-full overflow-hidden">
+      {/* Enhanced progress bar */}
+      <div className="w-80 h-1 bg-muted/30 rounded-full overflow-hidden relative backdrop-blur-sm">
         <div
-          className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        />
+          className="h-full bg-gradient-to-r from-primary via-accent to-primary transition-all duration-300 relative"
+          style={{ 
+            width: `${progress}%`,
+            boxShadow: '0 0 20px hsl(var(--primary) / 0.5)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
+        </div>
       </div>
-      <div className="mt-2 text-sm font-mono text-muted-foreground">
-        {progress}%
+
+      {/* Binary code rain effect */}
+      <div className="absolute inset-0 pointer-events-none opacity-10">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="binary-rain"
+            style={{
+              left: `${(i * 5) % 100}%`,
+              animationDelay: `${i * 0.3}s`,
+              animationDuration: `${3 + (i % 3)}s`
+            }}
+          >
+            {Math.random() > 0.5 ? '1' : '0'}
+          </div>
+        ))}
       </div>
 
       <style>{`
-        .frying-pan-container {
+        @keyframes grid-move {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(50px, 50px);
+          }
+        }
+
+        .scan-line {
+          position: absolute;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, 
+            transparent, 
+            hsl(var(--primary) / 0.5), 
+            transparent
+          );
+          animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+          0% {
+            top: 0%;
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            top: 100%;
+            opacity: 0;
+          }
+        }
+
+        .cyber-loader {
           position: relative;
           width: 200px;
           height: 200px;
-          animation: toss 1.5s ease-in-out infinite;
         }
 
-        .frying-pan {
-          position: relative;
-          z-index: 2;
-        }
-
-        .pan-handle {
+        .hexagon {
           position: absolute;
-          right: -60px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 80px;
-          height: 8px;
-          background: linear-gradient(to right, hsl(var(--muted-foreground)), hsl(var(--foreground)));
-          border-radius: 4px;
-        }
-
-        .pan-body {
           width: 120px;
           height: 120px;
-          background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--muted-foreground)) 100%);
-          border-radius: 50%;
-          border: 4px solid hsl(var(--foreground));
-          box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.3);
-          position: relative;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+          background: linear-gradient(135deg, 
+            hsl(var(--primary) / 0.2), 
+            hsl(var(--accent) / 0.2)
+          );
+          border: 2px solid hsl(var(--primary));
+          animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        .egg {
-          position: absolute;
-          top: 30px;
-          left: 30px;
-          animation: flip 1.5s ease-in-out infinite;
-          z-index: 1;
+        .hexagon-inner {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
         }
 
-        .egg-white {
-          width: 60px;
-          height: 60px;
-          background: rgba(255, 255, 255, 0.9);
-          border-radius: 50% 50% 45% 55%;
-          position: relative;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+          }
+          50% {
+            box-shadow: 0 0 40px hsl(var(--primary) / 0.8);
+          }
         }
 
-        .egg-yolk {
+        .orbit {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 24px;
-          height: 24px;
-          background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+          border: 1px solid hsl(var(--primary) / 0.3);
           border-radius: 50%;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        @keyframes toss {
-          0%, 100% {
-            transform: translateY(0) rotate(-15deg);
+        .orbit-1 {
+          width: 140px;
+          height: 140px;
+          animation: rotate 3s linear infinite;
+        }
+
+        .orbit-2 {
+          width: 170px;
+          height: 170px;
+          animation: rotate 4s linear infinite reverse;
+        }
+
+        .orbit-3 {
+          width: 200px;
+          height: 200px;
+          animation: rotate 5s linear infinite;
+        }
+
+        @keyframes rotate {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg);
           }
-          25% {
-            transform: translateY(-20px) rotate(-10deg);
-          }
-          50% {
-            transform: translateY(-40px) rotate(-5deg);
-          }
-          75% {
-            transform: translateY(-20px) rotate(-10deg);
+          to {
+            transform: translate(-50%, -50%) rotate(360deg);
           }
         }
 
-        @keyframes flip {
-          0%, 100% {
-            transform: translateY(0) rotateX(0deg);
+        .orbit-dot {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: hsl(var(--primary));
+          border-radius: 50%;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          box-shadow: 0 0 10px hsl(var(--primary));
+        }
+
+        .glitch-text {
+          position: relative;
+          animation: glitch-skew 1s infinite;
+        }
+
+        @keyframes glitch-skew {
+          0% {
+            transform: skew(0deg);
           }
-          25% {
-            transform: translateY(-60px) rotateX(180deg);
+          10% {
+            transform: skew(-2deg);
           }
-          50% {
-            transform: translateY(-100px) rotateX(360deg);
+          20% {
+            transform: skew(2deg);
           }
-          75% {
-            transform: translateY(-60px) rotateX(180deg);
+          30% {
+            transform: skew(0deg);
+          }
+          100% {
+            transform: skew(0deg);
+          }
+        }
+
+        .binary-rain {
+          position: absolute;
+          top: -20px;
+          font-family: monospace;
+          font-size: 14px;
+          color: hsl(var(--primary));
+          animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+          0% {
+            transform: translateY(-20px);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh);
+            opacity: 0;
           }
         }
       `}</style>

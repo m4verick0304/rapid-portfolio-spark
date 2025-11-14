@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Award, CheckCircle2, ExternalLink, Calendar } from "lucide-react";
+import { Award, CheckCircle2, ExternalLink } from "lucide-react";
 
 const Certifications = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,7 +26,6 @@ const Certifications = () => {
     {
       name: "Certified Ethical Hacker (CEH)",
       issuer: "EC-Council",
-      date: "2024",
       status: "Planned",
       description: "Advanced ethical hacking and penetration testing certification",
       badge: "🔒",
@@ -34,7 +33,6 @@ const Certifications = () => {
     {
       name: "CompTIA Security+",
       issuer: "CompTIA",
-      date: "2023",
       status: "Planned",
       description: "Foundation-level cybersecurity certification covering core security concepts",
       badge: "🛡️",
@@ -42,7 +40,6 @@ const Certifications = () => {
     {
       name: "AWS Certified Security",
       issuer: "Amazon Web Services",
-      date: "2024",
       status: "Planned",
       description: "Cloud security specialization for AWS environments",
       badge: "☁️",
@@ -50,7 +47,6 @@ const Certifications = () => {
     {
       name: "Offensive Security Certified Professional (OSCP)",
       issuer: "Offensive Security",
-      date: "2024",
       status: "Planned",
       description: "Hands-on penetration testing certification",
       badge: "⚔️",
@@ -58,7 +54,6 @@ const Certifications = () => {
     {
       name: "Certified Information Systems Security Professional (CISSP)",
       issuer: "ISC²",
-      date: "2025",
       status: "Planned",
       description: "Gold standard for information security professionals",
       badge: "🏆",
@@ -66,7 +61,6 @@ const Certifications = () => {
     {
       name: "Google Cybersecurity Certificate",
       issuer: "Google",
-      date: "2023",
       status: "Planned",
       description: "Comprehensive cybersecurity foundations and best practices",
       badge: "🎓",
@@ -151,12 +145,6 @@ const Certifications = () => {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Award className="h-4 w-4" />
                   <span className="font-medium">{cert.issuer}</span>
-                </div>
-
-                {/* Date */}
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                  <Calendar className="h-3 w-3" />
-                  <span>{cert.date}</span>
                 </div>
 
                 {/* Description */}

@@ -52,8 +52,8 @@ const Contact = () => {
               <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
-              <a href="mailto:shubham@example.com" className="hover:underline underline-offset-4">
-                shubham@example.com
+              <a href="mailto:shubham.20256@lpu.in" className="hover:underline underline-offset-4">
+                shubham.20256@lpu.in
               </a>
             </div>
             

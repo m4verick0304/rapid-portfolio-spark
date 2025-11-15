@@ -24,44 +24,44 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
   // Calculate ball properties based on progress
   const getBallStyle = () => {
-    const startSize = 30;
-    const endSize = 2000;
+    const startSize = 40;
+    const endSize = Math.max(window.innerWidth, window.innerHeight) * 2.5; // Much larger to fill screen
     
     // Drop phase (0-60): Ball drops with bounce
     // Bounce phase (60-70): Bounce effect at center
     // Enlarge phase (70-100): Grows into semi-circle and fades
     
     let size = startSize;
-    let topPosition = 50;
+    let bottomPosition = 50; // Changed to bottom positioning
     let opacity = 1;
     let borderRadius = '50%';
     
     if (progress < 60) {
       // Dropping phase
       const dropProgress = progress / 60;
-      topPosition = -20 + (dropProgress * 70);
+      bottomPosition = 120 - (dropProgress * 70); // Drop from top to center
       size = startSize;
     } else if (progress < 70) {
       // Bounce effect
       const bounceProgress = (progress - 60) / 10;
-      const bounceHeight = Math.sin(bounceProgress * Math.PI) * 10;
-      topPosition = 50 - bounceHeight;
-      size = startSize + bounceProgress * 20;
+      const bounceHeight = Math.sin(bounceProgress * Math.PI) * 15;
+      bottomPosition = 50 + bounceHeight;
+      size = startSize + bounceProgress * 30;
     } else {
-      // Enlarging phase - semi-circle growing upward
+      // Enlarging phase - semi-circle growing upward from bottom
       const enlargeProgress = (progress - 70) / 30;
-      size = startSize + 20 + (enlargeProgress * (endSize - startSize - 20));
-      topPosition = 50 + (size / 4); // Move down as it grows to keep bottom at center
-      borderRadius = `${50 * (1 - enlargeProgress * 0.3)}% ${50 * (1 - enlargeProgress * 0.3)}% 0 0`;
+      size = startSize + 30 + (enlargeProgress * (endSize - startSize - 30));
+      bottomPosition = 0; // Anchor at bottom
+      borderRadius = `50% 50% 0 0`; // Perfect semi-circle
       opacity = progress < 95 ? 1 : 1 - ((progress - 95) / 5);
     }
 
     return {
       width: `${size}px`,
       height: progress >= 70 ? `${size / 2}px` : `${size}px`, // Semi-circle height
-      top: `${topPosition}%`,
+      bottom: `${bottomPosition}%`,
       left: '50%',
-      transform: 'translate(-50%, -50%)',
+      transform: 'translateX(-50%)',
       opacity,
       borderRadius,
     };
@@ -124,15 +124,17 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
       {/* Counter text - bottom left corner */}
       <div 
-        className="absolute text-white font-bold transition-all duration-500 ease-out z-10"
+        className="absolute font-bold transition-all duration-500 ease-out z-10"
         style={{
-          fontSize: '80px',
-          bottom: '40px',
-          left: '40px',
+          fontSize: '120px',
+          bottom: '60px',
+          left: '60px',
           opacity: progress < 95 ? 1 : 1 - ((progress - 95) / 5),
-          textShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
-          fontFamily: 'monospace',
-          filter: 'blur(0.5px)',
+          color: '#B8D4E8',
+          textShadow: '0 0 30px rgba(184, 212, 232, 0.6), 0 0 60px rgba(184, 212, 232, 0.3)',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          fontWeight: '700',
+          letterSpacing: '-0.02em',
         }}
       >
         {progress}

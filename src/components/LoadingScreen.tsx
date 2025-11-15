@@ -24,29 +24,46 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
   // Calculate ball properties based on progress
   const getBallStyle = () => {
-    // Ball starts small and at the top, drops and enlarges as progress increases
-    const startSize = 20; // Starting size in pixels
-    const endSize = 800; // Final size when reaching 100
+    const startSize = 30;
+    const endSize = 2000;
     
-    // Calculate size - exponential growth as it approaches 100
-    const size = progress < 90 
-      ? startSize + (progress * 2) 
-      : startSize + ((progress - 90) * (endSize - startSize - 180) / 10) + 180;
+    // Drop phase (0-60): Ball drops with bounce
+    // Bounce phase (60-70): Bounce effect at center
+    // Enlarge phase (70-100): Grows into semi-circle and fades
     
-    // Calculate position - drops from top to center
-    const startY = -10; // Start above viewport
-    const centerY = 50; // Center position
-    const topPosition = progress < 80 
-      ? startY + (progress * (centerY - startY) / 80)
-      : centerY;
+    let size = startSize;
+    let topPosition = 50;
+    let opacity = 1;
+    let borderRadius = '50%';
+    
+    if (progress < 60) {
+      // Dropping phase
+      const dropProgress = progress / 60;
+      topPosition = -20 + (dropProgress * 70);
+      size = startSize;
+    } else if (progress < 70) {
+      // Bounce effect
+      const bounceProgress = (progress - 60) / 10;
+      const bounceHeight = Math.sin(bounceProgress * Math.PI) * 10;
+      topPosition = 50 - bounceHeight;
+      size = startSize + bounceProgress * 20;
+    } else {
+      // Enlarging phase - semi-circle growing upward
+      const enlargeProgress = (progress - 70) / 30;
+      size = startSize + 20 + (enlargeProgress * (endSize - startSize - 20));
+      topPosition = 50 + (size / 4); // Move down as it grows to keep bottom at center
+      borderRadius = `${50 * (1 - enlargeProgress * 0.3)}% ${50 * (1 - enlargeProgress * 0.3)}% 0 0`;
+      opacity = progress < 95 ? 1 : 1 - ((progress - 95) / 5);
+    }
 
     return {
       width: `${size}px`,
-      height: `${size}px`,
+      height: progress >= 70 ? `${size / 2}px` : `${size}px`, // Semi-circle height
       top: `${topPosition}%`,
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      opacity: progress < 5 ? progress / 5 : 1,
+      opacity,
+      borderRadius,
     };
   };
 
@@ -65,13 +82,13 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
 
       {/* Animated ball that drops and enlarges */}
       <div
-        className="absolute rounded-full bg-white transition-all duration-300 ease-out"
+        className="absolute bg-white transition-all duration-200 ease-out"
         style={{
           ...getBallStyle(),
-          boxShadow: progress > 90 
-            ? `0 0 ${100 + (progress - 90) * 20}px rgba(255, 255, 255, 0.8), 0 0 ${200 + (progress - 90) * 40}px rgba(255, 255, 255, 0.4)`
+          boxShadow: progress > 70 
+            ? `0 0 ${100 + (progress - 70) * 30}px rgba(255, 255, 255, 0.8), 0 0 ${200 + (progress - 70) * 60}px rgba(255, 255, 255, 0.4)`
             : '0 0 40px rgba(255, 255, 255, 0.6)',
-          filter: progress > 95 ? 'blur(2px)' : 'none',
+          filter: progress > 95 ? 'blur(4px)' : 'none',
         }}
       />
 
@@ -105,17 +122,17 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
         </>
       )}
 
-      {/* Counter text */}
+      {/* Counter text - bottom left corner */}
       <div 
-        className="absolute text-white font-bold transition-all duration-300 z-10"
+        className="absolute text-white font-bold transition-all duration-500 ease-out z-10"
         style={{
-          fontSize: progress < 90 ? '120px' : `${120 + (progress - 90) * 5}px`,
-          top: progress < 90 ? '50%' : '40%',
-          left: progress < 90 ? '20%' : '15%',
-          transform: 'translate(-50%, -50%)',
+          fontSize: '80px',
+          bottom: '40px',
+          left: '40px',
           opacity: progress < 95 ? 1 : 1 - ((progress - 95) / 5),
-          textShadow: '0 0 30px rgba(255, 255, 255, 0.5)',
+          textShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
           fontFamily: 'monospace',
+          filter: 'blur(0.5px)',
         }}
       >
         {progress}
